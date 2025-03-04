@@ -1,3 +1,6 @@
 Get-Service
 
-$PSVersionTableP
+$PSVersionTable
+
+
+Get-Process
