@@ -5,20 +5,31 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit
 }
 
-# Import necessary modules from Windows PowerShell session for compatibility.
-# The ServerManager module provides Install-WindowsFeature, and ADDSDeployment module contains Install-ADDSForest.
-Import-Module ServerManager -UseWindowsPowerShell
-Import-Module ADDSDeployment -UseWindowsPowerShell
+# Import necessary modules required for the script to function correctly from Windows PowerShell session for compatibility.
+# The ServerManager module provides Install-WindowsFeature, and ActiveDirectory module contains Install-ADDSForest.
+Import-Module ServerManager 
+# Check if the ActiveDirectory module is available before importing it.
+if (Get-Module -ListAvailable -Name ActiveDirectory) {
+    Import-Module ActiveDirectory
+} else {
+    Write-Error "The ActiveDirectory module is not available on this system."
+    exit
+}
+
+# Define the name of the new domain controller.
+$newdcs = Read-Host "Please enter the name of the new domain controller"
 
 # Install the Active Directory Domain Services (AD DS) role along with management tools.
 Write-Output "Installing AD DS role and management tools..."
-Install-WindowsFeature -Name AD-Domain-Services -IncludeManagementTools
+Install-WindowsFeature -ComputerName $newdcs AD-Domain-Services -IncludeManagementTools
 
-# Define parameters for promotion.
-$DomainName        = "example.com"      # Change this to your desired domain name.
-$NetBIOSName       = "EXAMPLE"          # Change this to your desired NetBIOS name.
-# Convert a plain text password to a secure string for the Directory Services Restore Mode (DSRM) account.
-$SafeModePassword  = ConvertTo-SecureString "P@ssw0rd!" -AsPlainText -Force
+# Ask the user to define parameters for promotion.
+$DomainName        = Read-Host "Please enter the desired domain name"
+$NetBIOSName       = Read-Host "Please enter the desired NetBIOS name"
+
+# Ask the user to input the password for the Directory Services Restore Mode (DSRM) account and convert to a secure string.
+$PlainPassword = Read-Host "Please enter the DSRM password" -AsSecureString
+$SafeModePassword = $PlainPassword
 
 # Confirm the settings (optional)
 Write-Output "Preparing to promote the server to Domain Controller for a new forest."
