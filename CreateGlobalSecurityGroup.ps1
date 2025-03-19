@@ -1,6 +1,6 @@
 # Setting the OU name, Domain, new Group Name, Group Type, and Group Scope.
 $OUName = Read-Host -Prompt "Please enter the OU Name"
-$DomainDN = Read-Host -Prompt "Please enter the Domain DN (e.g., DC=Adatum,DC=com)"
+$DomainDN = Read-Host -Prompt "Please enter the Domain Distinguished Name (e.g., DC=Example,DC=com)"
 $OUPath = "OU=$OUName,$DomainDN"
 $GroupName = Read-Host -Prompt "Please enter the Group Name"
 $GroupType = Read-Host -Prompt "Please enter the Group Type (Security or Distribution)"
