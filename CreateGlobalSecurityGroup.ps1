@@ -14,3 +14,4 @@ else
     New-ADGroup -Name $GroupName -GroupScope Global -GroupCategory Security -Path $OUPath
     Write-Host "The group '$GroupName' has been created in the OU '$OUName'."
    }
+
