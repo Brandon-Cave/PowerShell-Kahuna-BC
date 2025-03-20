@@ -1,3 +1,4 @@
+function New-OUandGroup {
 # Setting the OU name, Domain, new Group Name, Group Type, and Group Scope.
 $OUName = Read-Host -Prompt "Please enter the OU Name"
 $DomainDN = Read-Host -Prompt "Please enter the Domain Distinguished Name (e.g., DC=Example,DC=com)"
@@ -28,4 +29,5 @@ else {
   Write-Host "No group with the name '$GroupName' currently exists." -ForegroundColor Yellow
   New-ADGroup -Name $GroupName -GroupScope $GroupScope -GroupCategory $GroupType -Path $OUPath
   Write-Host "The group '$GroupName' has been created in the OU '$OUName' with type '$GroupType' and scope '$GroupScope'."
+}
 }
