@@ -21,7 +21,12 @@ else {
 
 # Get all users who haven't logged in since the inactive date using LDAP filter
 $ldapFilter = "(&(objectCategory=person)(objectClass=user)(|(lastLogonTimestamp<=$windowstimeformat)(!lastLogonTimestamp=*)))"
-$inactiveUsers = Get-ADUser -LDAPFilter $ldapFilter -Properties lastLogonTimestamp -Server $domainController
+if ($domainController) {
+    $inactiveUsers = Get-ADUser -LDAPFilter $ldapFilter -Properties lastLogonTimestamp -Server $domainController
+} 
+else {
+    $inactiveUsers = Get-ADUser -LDAPFilter $ldapFilter -Properties lastLogonTimestamp
+}
 
 # Output the inactive users
 Write-Host "There are a total of '$($inactiveUsers.Count)' inactive users."
